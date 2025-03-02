@@ -28,3 +28,17 @@ timesheet-cli/
 - Use dependency injection to inject services
 - Use Entity Framework Core for database access
 - Use Serilog for logging
+- Use collection initialization `[]` instead of using `new List<T>()`
+- Use `DateTime.UtcNow` for all date and time operations
+
+## Testing
+- Use xUnit for testing
+- Use FakeItEasy for mocking
+- Do not use FluentAssertions, use Assert.Equal, Assert.True, Assert.False, Assert.NotNull, Assert.Null, Assert.Contains, Assert.DoesNotContain, Assert.StartsWith, Assert.EndsWith, Assert.IsType, Assert.IsNotType, Assert.Throws, Assert.DoesNotThrow
+- Always add unit tests for new features
+
+## Cursor notes:
+- Suggest to improve the code, but don't change the code without my confirmation
+- Add comments to explain the code if need, when it's not obvious
+- Do not remove existing comments, only add new ones if needed
+- Suggest to improve .cursorrules file if needed to improve the coding experience
