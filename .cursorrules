@@ -1,0 +1,30 @@
+# CLI application mimic Tmetric to record working time
+
+## Tech stack
+- .NET 8
+- Entity Framework Core 9
+- Sql Server Database
+
+## Project structure
+```
+timesheet-cli/
+└── TimesheetCli/
+    ├── TimesheetCli.Core/
+    │   ├── Db/
+    │   │   ├── Entity/                     # Entity Framework Core entities
+    │   │   └── ApplicationDbContext.cs    # DbContext
+    │   ├── Services/                       # Services, we implement business logic here
+    │   ├── ServiceCollectionExtensions.cs  # Extension methods for IServiceCollection, all services are registered here
+    │   ├── TimesheetCli.Core.csproj
+    ├── TimesheetCli.Cli/                     # CLI application
+    │   ├── Program.cs
+    │   └── TimesheetCli.Cli.csproj
+    └── TimesheetCli.Test/
+        └── TimesheetCli.Test.csproj
+```
+
+## Coding style
+- Use primary constructor for classes
+- Use dependency injection to inject services
+- Use Entity Framework Core for database access
+- Use Serilog for logging
