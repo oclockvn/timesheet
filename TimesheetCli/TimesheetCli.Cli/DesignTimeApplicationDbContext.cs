@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using TimesheetCli.Core.Db;
+using TimesheetCli.Core.Resolvers;
 
 namespace TimesheetCli.Cli;
 
@@ -26,7 +27,7 @@ public class DesignTimeApplicationDbContext : IDesignTimeDbContextFactory<Applic
             .UseSqlServer(connectionString)
             .Options;
 
-        return new ApplicationDbContext(dbOption);
+        return new ApplicationDbContext(dbOption, new AutomationUserResolver());
     }
 
     private static string GetConnectionStringFromArgs(string[] args)

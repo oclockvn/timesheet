@@ -1,27 +1,69 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimesheetCli.Core.Db.Entity;
+using TimesheetCli.Core.Resolvers;
 
 namespace TimesheetCli.Core.Db;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserResolver userResolver) : DbContext(options)
 {
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Project> Projects { get; set; } = null!;
+    public DbSet<Entity.User> Users { get; set; } = null!;
+    public DbSet<Entity.Project> Projects { get; set; } = null!;
     public DbSet<Entity.Task> Tasks { get; set; } = null!;
-    public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
+    public DbSet<Entity.TimeEntry> TimeEntries { get; set; } = null!;
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await ApplyAuditAsync();
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task ApplyAuditAsync()
+    {
+        var user = await userResolver.Resolve();
+
+        // Create a stable snapshot of entries and filter by state
+        var addedEntries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added)
+            .ToList();
+
+        var modifiedEntries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Modified)
+            .ToList();
+
+        // Process added entries
+        foreach (var entry in addedEntries)
+        {
+            if (entry.Entity is Entity.ICreatedBy createEntity)
+            {
+                createEntity.CreatedUtc = DateTime.UtcNow;
+                createEntity.CreatedBy = user.Id;
+                createEntity.CreatedName = user.FullName;
+            }
+        }
+
+        // Process modified entries
+        foreach (var entry in modifiedEntries)
+        {
+            if (entry.Entity is Entity.IUpdatedBy updateEntity)
+            {
+                updateEntity.UpdatedUtc = DateTime.UtcNow;
+                updateEntity.UpdatedBy = user.Id;
+                updateEntity.UpdatedName = user.FullName;
+            }
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<Entity.User>(entity =>
         {
             entity.ToTable("Users");
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Email).IsUnique();
         });
 
-        modelBuilder.Entity<Project>(entity =>
+        modelBuilder.Entity<Entity.Project>(entity =>
         {
             entity.ToTable("Projects");
             entity.HasKey(e => e.Id);
@@ -54,7 +96,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         });
 
         // Configure TimeEntry entity
-        modelBuilder.Entity<TimeEntry>(entity =>
+        modelBuilder.Entity<Entity.TimeEntry>(entity =>
         {
             entity.ToTable("TimeEntries");
             entity.HasKey(e => e.Id);

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using TimesheetCli.Core.Db;
+using TimesheetCli.Core.Resolvers;
 
 namespace TimesheetCli.Core;
 
@@ -10,7 +11,10 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddTimesheetCliCore(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
     {
-        services.AddApplicationDbContext(configuration, isDevelopment);
+        services
+            .AddApplicationDbContext(configuration, isDevelopment)
+            .AddScoped<IUserResolver, HttpContextUserResolver>()
+            ;
 
         return services;
     }
