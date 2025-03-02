@@ -16,12 +16,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.ToTable("Users");
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Email).IsUnique();
         });
 
         modelBuilder.Entity<Project>(entity =>
         {
+            entity.ToTable("Projects");
             entity.HasKey(e => e.Id);
 
             // Configure relationship with User
@@ -34,6 +36,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Configure Task entity
         modelBuilder.Entity<Entity.Task>(entity =>
         {
+            entity.ToTable("Tasks");
             entity.HasKey(e => e.Id);
 
             // Configure relationship with User
@@ -53,6 +56,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Configure TimeEntry entity
         modelBuilder.Entity<TimeEntry>(entity =>
         {
+            entity.ToTable("TimeEntries");
             entity.HasKey(e => e.Id);
 
             // Configure relationship with User
