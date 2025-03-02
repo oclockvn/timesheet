@@ -1,0 +1,44 @@
+# CLI application mimic Tmetric to record working time
+
+## Tech stack
+- .NET 8
+- Entity Framework Core 9
+- Sql Server Database
+
+## Project structure
+```
+timesheet-cli/
+└── TimesheetCli/
+    ├── TimesheetCli.Core/
+    │   ├── Db/
+    │   │   ├── Entity/                     # Entity Framework Core entities
+    │   │   └── ApplicationDbContext.cs    # DbContext
+    │   ├── Services/                       # Services, we implement business logic here
+    │   ├── ServiceCollectionExtensions.cs  # Extension methods for IServiceCollection, all services are registered here
+    │   ├── TimesheetCli.Core.csproj
+    ├── TimesheetCli.Cli/                     # CLI application
+    │   ├── Program.cs
+    │   └── TimesheetCli.Cli.csproj
+    └── TimesheetCli.Test/
+        └── TimesheetCli.Test.csproj
+```
+
+## Coding style
+- Use primary constructor for classes
+- Use dependency injection to inject services
+- Use Entity Framework Core for database access
+- Use Serilog for logging
+- Use collection initialization `[]` instead of using `new List<T>()`
+- Use `DateTime.UtcNow` for all date and time operations
+
+## Testing
+- Use xUnit for testing
+- Use FakeItEasy for mocking
+- Do not use FluentAssertions, use Assert.Equal, Assert.True, Assert.False, Assert.NotNull, Assert.Null, Assert.Contains, Assert.DoesNotContain, Assert.StartsWith, Assert.EndsWith, Assert.IsType, Assert.IsNotType, Assert.Throws, Assert.DoesNotThrow
+- Always add unit tests for new features
+
+## Cursor notes:
+- Suggest to improve the code, but don't change the code without my confirmation
+- Add comments to explain the code if need, when it's not obvious
+- Do not remove existing comments, only add new ones if needed
+- Suggest to improve .cursorrules file if needed to improve the coding experience
