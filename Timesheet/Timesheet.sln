@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.35821.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimesheetCli.Core", "TimesheetCli.Core\TimesheetCli.Core.csproj", "{D733B31D-CF0A-4302-B3D4-A20D1C32D185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Core", "TimesheetCli.Core\Timesheet.Core.csproj", "{D733B31D-CF0A-4302-B3D4-A20D1C32D185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimesheetCli.Test", "TimesheetCli.Test\TimesheetCli.Test.csproj", "{E9A5B413-DED6-4649-A796-F90762CE7FF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Test", "TimesheetCli.Test\Timesheet.Test.csproj", "{E9A5B413-DED6-4649-A796-F90762CE7FF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimesheetCli.Cli", "TimesheetCli.Cli\TimesheetCli.Cli.csproj", "{D3815C7D-5EBB-41D9-981F-A4176F0EBE38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timesheet.Cli", "TimesheetCli.Cli\Timesheet.Cli.csproj", "{D3815C7D-5EBB-41D9-981F-A4176F0EBE38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

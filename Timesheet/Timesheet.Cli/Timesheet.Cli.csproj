@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\TimesheetCli.Core\TimesheetCli.Core.csproj" />
+		<ProjectReference Include="..\Timesheet.Core\TimesheetCli.Core.csproj" />
 	</ItemGroup>
 
 </Project>
