@@ -1,4 +1,4 @@
-﻿namespace TimesheetCli.Core.Db;
+﻿namespace Timesheet.Core.Db;
 
 public class DbOption
 {

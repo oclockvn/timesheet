@@ -1,4 +1,4 @@
-namespace TimesheetCli.Test
+namespace Timesheet.Test
 {
     public class UnitTest1
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TimesheetCli.Core.Db.Entity;
+namespace Timesheet.Core.Db.Entity;
 
 public class Task : ICreatedBy, IUpdatedBy
 {

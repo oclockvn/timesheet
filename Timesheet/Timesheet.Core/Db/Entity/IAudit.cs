@@ -1,4 +1,4 @@
-namespace TimesheetCli.Core.Db.Entity;
+namespace Timesheet.Core.Db.Entity;
 
 public interface ICreatedBy
 {

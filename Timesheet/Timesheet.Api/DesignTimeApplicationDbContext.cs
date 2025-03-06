@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using TimesheetCli.Core.Db;
-using TimesheetCli.Core.Resolvers;
+using Timesheet.Core.Db;
+using Timesheet.Core.Resolvers;
 
-namespace TimesheetCli.Cli;
+namespace Timesheet.Api;
 
 public class DesignTimeApplicationDbContext : IDesignTimeDbContextFactory<ApplicationDbContext>
 {

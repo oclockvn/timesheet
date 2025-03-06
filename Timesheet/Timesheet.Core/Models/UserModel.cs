@@ -1,4 +1,4 @@
-﻿namespace TimesheetCli.Core.Models;
+﻿namespace Timesheet.Core.Models;
 
 public class UserModel
 {

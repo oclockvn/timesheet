@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TimesheetCli.Core.Resolvers;
+using Timesheet.Core.Db.Entity;
+using Timesheet.Core.Resolvers;
 
-namespace TimesheetCli.Core.Db;
+namespace Timesheet.Core.Db;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserResolver userResolver) : DbContext(options)
 {
-    public DbSet<Entity.User> Users { get; set; } = null!;
-    public DbSet<Entity.Project> Projects { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
     public DbSet<Entity.Task> Tasks { get; set; } = null!;
-    public DbSet<Entity.TimeEntry> TimeEntries { get; set; } = null!;
+    public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -16,7 +17,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task ApplyAuditAsync()
+    private async System.Threading.Tasks.Task ApplyAuditAsync()
     {
         var user = await userResolver.Resolve();
 
@@ -32,7 +33,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Process added entries
         foreach (var entry in addedEntries)
         {
-            if (entry.Entity is Entity.ICreatedBy createEntity)
+            if (entry.Entity is ICreatedBy createEntity)
             {
                 createEntity.CreatedUtc = DateTime.UtcNow;
                 createEntity.CreatedBy = user.Id;
@@ -43,7 +44,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         // Process modified entries
         foreach (var entry in modifiedEntries)
         {
-            if (entry.Entity is Entity.IUpdatedBy updateEntity)
+            if (entry.Entity is IUpdatedBy updateEntity)
             {
                 updateEntity.UpdatedUtc = DateTime.UtcNow;
                 updateEntity.UpdatedBy = user.Id;
@@ -56,14 +57,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Entity.User>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable("Users");
             entity.HasKey(e => e.Id);
             entity.HasIndex(e => e.Email).IsUnique();
         });
 
-        modelBuilder.Entity<Entity.Project>(entity =>
+        modelBuilder.Entity<Project>(entity =>
         {
             entity.ToTable("Projects");
             entity.HasKey(e => e.Id);
@@ -96,7 +97,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         });
 
         // Configure TimeEntry entity
-        modelBuilder.Entity<Entity.TimeEntry>(entity =>
+        modelBuilder.Entity<TimeEntry>(entity =>
         {
             entity.ToTable("TimeEntries");
             entity.HasKey(e => e.Id);
