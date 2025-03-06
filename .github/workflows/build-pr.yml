@@ -10,7 +10,7 @@ on:
     branches: [ "master" ]
 
 env:
-  SLN_PATH: "Timesheet/Timesheet.slnx"
+  SLN_PATH: "./Timesheet/Timesheet.slnx"
 
 jobs:
   build:
