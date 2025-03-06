@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using TimesheetCli.Core.Db;
-using TimesheetCli.Core.Resolvers;
-using TimesheetCli.Core.Services;
+using Timesheet.Core.Db;
+using Timesheet.Core.Resolvers;
+using Timesheet.Core.Services;
 
-namespace TimesheetCli.Core;
+namespace Timesheet.Core;
 
 public static class ServiceCollectionExtension
 {

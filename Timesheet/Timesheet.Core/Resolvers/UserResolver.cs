@@ -1,6 +1,6 @@
-﻿using TimesheetCli.Core.Models;
+﻿using Timesheet.Core.Models;
 
-namespace TimesheetCli.Core.Resolvers;
+namespace Timesheet.Core.Resolvers;
 
 public interface IUserResolver
 {

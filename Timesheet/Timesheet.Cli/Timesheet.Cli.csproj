@@ -11,14 +11,10 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
+		</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Timesheet.Core\TimesheetCli.Core.csproj" />
+		<ProjectReference Include="..\Timesheet.Core\Timesheet.Core.csproj" />
 	</ItemGroup>
 
 </Project>
