@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using TimesheetCli.Core.Db;
 using TimesheetCli.Core.Resolvers;
+using TimesheetCli.Core.Services;
 
 namespace TimesheetCli.Core;
 
@@ -14,6 +15,7 @@ public static class ServiceCollectionExtension
         services
             .AddApplicationDbContext(configuration, isDevelopment)
             .AddScoped<IUserResolver, HttpContextUserResolver>()
+            .AddScoped<IUserService, UserService>()
             ;
 
         return services;

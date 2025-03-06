@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Timesheet.Api/Timesheet.Api.csproj" Id="d18600cc-ace1-4d24-94c6-3734343eb6c6" />
+  <Project Path="Timesheet.Cli/Timesheet.Cli.csproj" />
+  <Project Path="Timesheet.Core/Timesheet.Core.csproj" />
+  <Project Path="Timesheet.Test/Timesheet.Test.csproj" />
+</Solution>
