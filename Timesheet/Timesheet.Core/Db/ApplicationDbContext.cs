@@ -81,6 +81,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             entity.ToTable("Tasks");
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Code).IsUnique();
 
             // Configure relationship with User
             entity.HasOne(t => t.User)

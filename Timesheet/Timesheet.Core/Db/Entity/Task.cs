@@ -7,7 +7,7 @@ public class Task : ICreatedBy, IUpdatedBy
     public int Id { get; set; }
 
     [Required]
-    [StringLength(100, MinimumLength = 1)]
+    [StringLength(20, MinimumLength = 1)]
     public string Code { get; set; } = string.Empty;
 
     [StringLength(250)]
@@ -32,3 +32,4 @@ public class Task : ICreatedBy, IUpdatedBy
     [StringLength(100)]
     public string CreatedName { get; set; } = null!;
 }
+
