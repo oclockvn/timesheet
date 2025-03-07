@@ -6,21 +6,31 @@
 - Sql Server Database
 
 ## Project structure
+
 ```
-timesheet-cli/
-└── TimesheetCli/
-    ├── TimesheetCli.Core/
-    │   ├── Db/
-    │   │   ├── Entity/                     # Entity Framework Core entities
-    │   │   └── ApplicationDbContext.cs    # DbContext
-    │   ├── Services/                       # Services, we implement business logic here
-    │   ├── ServiceCollectionExtensions.cs  # Extension methods for IServiceCollection, all services are registered here
-    │   ├── TimesheetCli.Core.csproj
-    ├── TimesheetCli.Cli/                     # CLI application
-    │   ├── Program.cs
-    │   └── TimesheetCli.Cli.csproj
-    └── TimesheetCli.Test/
-        └── TimesheetCli.Test.csproj
+Timesheet/
+├── Timesheet.Core/                    # Core business logic and data access layer
+│   ├── Db/                           # Database related components
+│   ├── Migrations/                   # EF Core database migrations
+│   ├── Models/                       # Domain models
+│   ├── Resolvers/                    # Dependency injection resolvers
+│   ├── Services/                     # Business logic services
+│   ├── ServiceCollectionExtension.cs # DI container configuration
+│   └── Timesheet.Core.csproj        # Core project file
+│
+├── Timesheet.Cli/                    # Command-line interface application
+│   ├── Program.cs                   # Application entry point
+│   ├── appsettings.json            # Application configuration
+│   └── Timesheet.Cli.csproj        # CLI project file
+|
+├── Timesheet.Api/                    # API project
+│   ├── Program.cs                   # Application entry point
+│   ├── appsettings.json            # Application configuration
+│   └── Timesheet.Api.csproj        # API project file
+|
+└── Timesheet.Test/                  # Unit tests project
+    ├── UnitTest1.cs                # Test class
+    └── Timesheet.Test.csproj       # Test project file
 ```
 
 ## Coding style
@@ -30,6 +40,7 @@ timesheet-cli/
 - Use Serilog for logging
 - Use collection initialization `[]` instead of using `new List<T>()`
 - Use `DateTime.UtcNow` for all date and time operations
+- Use local namespace for all classes and methods
 
 ## Testing
 - Use xUnit for testing
@@ -42,3 +53,45 @@ timesheet-cli/
 - Add comments to explain the code if need, when it's not obvious
 - Do not remove existing comments, only add new ones if needed
 - Suggest to improve .cursorrules file if needed to improve the coding experience
+
+## How to
+
+For every new feature, those steps should be followed:
+
+1. Create new model class in Timesheet.Core/Models/XXXModel.cs
+2. Create new service class in Timesheet.Core/Services/XXXService.cs
+
+Service should follow SOLID principles and Single Responsibility Principle. Below is an example of how the service should be structured:
+
+Timesheet\Timesheet.Core\Services\TrackingService.cs
+
+```cs
+namespace Timesheet.Core.Services; // use local namespace
+
+public interface ITrackingService // define the interface for the service and the implementation in the same file
+{
+
+}
+
+internal class TrackingService : ITrackingService // implement the interface
+{
+}
+```
+
+then register the service in Timesheet.Core/ServiceCollectionExtension.cs
+
+```cs
+services.AddScoped<ITrackingService, TrackingService>();
+```
+
+3. Add/update the controller in Timesheet.Api/Controllers/XXXController.cs
+Inject the service into the controller constructor and use it in the controller methods
+
+```cs
+public XXXController(ITrackingService trackingService)
+    {
+        _trackingService = trackingService;
+    }
+```
+
+4. Add/update test cases in Timesheet.Test/XXXTests.cs
