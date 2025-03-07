@@ -16,6 +16,7 @@ public static class ServiceCollectionExtension
             .AddApplicationDbContext(configuration, isDevelopment)
             .AddScoped<IUserResolver, HttpContextUserResolver>()
             .AddScoped<IUserService, UserService>()
+            .AddScoped<ITimeEntryService, TimeEntryService>()
             ;
 
         return services;

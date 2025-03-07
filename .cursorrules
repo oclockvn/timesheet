@@ -10,7 +10,7 @@
 ```
 Timesheet/
 ├── Timesheet.Core/                    # Core business logic and data access layer
-│   ├── Db/                           # Database related components
+│   ├── Db/                           # Database entities model and configuration
 │   ├── Migrations/                   # EF Core database migrations
 │   ├── Models/                       # Domain models
 │   ├── Resolvers/                    # Dependency injection resolvers
@@ -58,7 +58,7 @@ Timesheet/
 
 ### For every new feature, those steps should be followed:
 
-1. Create new model class in Timesheet.Core/Models/XXXModel.cs
+1. Create new model class in Timesheet.Core/Models/XXXModel.cs. This is DTO class.
 2. Create new service class in Timesheet.Core/Services/XXXService.cs
 
 Service should follow SOLID principles and Single Responsibility Principle. Below is an example of how the service should be structured:
