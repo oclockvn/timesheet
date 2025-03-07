@@ -56,7 +56,7 @@ Timesheet/
 
 ## How to
 
-For every new feature, those steps should be followed:
+### For every new feature, those steps should be followed:
 
 1. Create new model class in Timesheet.Core/Models/XXXModel.cs
 2. Create new service class in Timesheet.Core/Services/XXXService.cs
@@ -95,3 +95,8 @@ public XXXController(ITrackingService trackingService)
 ```
 
 4. Add/update test cases in Timesheet.Test/XXXTests.cs
+
+### Current user
+
+- Current user is the user that is logged in to the system
+- In order to get the current user, inject `IUserResolver` service into the constructor
