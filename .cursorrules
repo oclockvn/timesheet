@@ -34,7 +34,7 @@ Timesheet/
 ```
 
 ## Coding style
-- Use primary constructor for classes
+- Use primary constructor for classes instead of constructor with parameters
 - Use dependency injection to inject services
 - Use Entity Framework Core for database access
 - Use Serilog for logging
