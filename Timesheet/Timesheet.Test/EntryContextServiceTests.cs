@@ -1,30 +1,19 @@
 using FakeItEasy;
 using Timesheet.Core;
 using Timesheet.Core.Db;
-using Timesheet.Core.Models;
 using Timesheet.Core.Resolvers;
 using Timesheet.Core.Services;
 using Timesheet.Test.Fixtures;
 
 namespace Timesheet.Test;
 
-public class EntryContextServiceTests : IClassFixture<DbFixture>
+public class EntryContextServiceTests(DbFixture fixture) : IClassFixture<DbFixture>
 {
-    private readonly DbFixture _fixture;
-
-    public EntryContextServiceTests(DbFixture fixture)
-    {
-        _fixture = fixture;
-        // Setup default user
-        var userResolver = fixture.Get<IUserResolver>();
-        A.CallTo(() => userResolver.Resolve()).Returns(Task.FromResult(new UserModel { Id = 1 }));
-    }
-
     [Fact]
     public async Task GetEntryContextAsync_WithNullDescription_ReturnsFailure()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync(null!);
@@ -41,7 +30,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithEmptyOrWhitespaceDescription_ReturnsFailure(string description)
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync(description);
@@ -58,7 +47,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithSquareBracketsFormat_ExtractsTaskCode(string description, string expectedTaskCode)
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync(description);
@@ -74,7 +63,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithColonFormat_ExtractsTaskCode(string description, string expectedTaskCode)
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync(description);
@@ -88,7 +77,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithNoTaskCode_ReturnsFailure()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync("Just a description without task code");
@@ -102,7 +91,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithExistingTask_ReturnsExistingTask()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
         var taskCode = "PROJ-1234";
         var existingTask = new Core.Db.Entity.Task2
         {
@@ -110,8 +99,8 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
             Description = "Existing task",
             UserId = 1
         };
-        _fixture.Get<ApplicationDbContext>().Tasks.Add(existingTask);
-        await _fixture.Get<ApplicationDbContext>().SaveChangesAsync();
+        fixture.Get<ApplicationDbContext>().Tasks.Add(existingTask);
+        await fixture.Get<ApplicationDbContext>().SaveChangesAsync();
 
         // Act
         var result = await service.GetEntryContextAsync($"[{taskCode}] Working on feature");
@@ -126,7 +115,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithNewTask_CreatesNewTask()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
         var taskCode = "PROJ-1234";
         var description = "New task description";
 
@@ -135,7 +124,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
 
         // Assert
         Assert.True(result.IsSuccess);
-        var createdTask = await _fixture.Get<ApplicationDbContext>().Tasks.FindAsync(result.Value.TaskId);
+        var createdTask = await fixture.Get<ApplicationDbContext>().Tasks.FindAsync(result.Value.TaskId);
         Assert.NotNull(createdTask);
         Assert.Equal(taskCode, createdTask.Code);
         Assert.Equal(description, createdTask.Description);
@@ -146,7 +135,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithMultipleColons_ExtractsFirstPartAsTaskCode()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync("PROJ-1234: part1: part2");
@@ -160,7 +149,7 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithMultipleSquareBrackets_UsesFirstBracketPair()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
+        var service = fixture.Get<IEntryContextService>();
 
         // Act
         var result = await service.GetEntryContextAsync("[PROJ-1234] [other] description");
@@ -174,8 +163,8 @@ public class EntryContextServiceTests : IClassFixture<DbFixture>
     public async Task GetEntryContextAsync_WithUserResolutionFailure_HandlesError()
     {
         // Arrange
-        var service = _fixture.Get<IEntryContextService>();
-        A.CallTo(() => _fixture.Get<IUserResolver>().Resolve()).Throws<Exception>();
+        var service = fixture.Get<IEntryContextService>();
+        A.CallTo(() => fixture.Get<IUserResolver>().Resolve()).Throws<Exception>();
 
         // Act
         var result = await service.GetEntryContextAsync("[PROJ-1234] description");
