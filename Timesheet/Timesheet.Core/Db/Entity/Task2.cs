@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Timesheet.Core.Db.Entity;
 
-public class Task : ICreatedBy, IUpdatedBy
+public class Task2 : ICreatedBy, IUpdatedBy
 {
     public int Id { get; set; }
 
@@ -32,4 +32,3 @@ public class Task : ICreatedBy, IUpdatedBy
     [StringLength(100)]
     public string CreatedName { get; set; } = null!;
 }
-

@@ -8,7 +8,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Project> Projects { get; set; } = null!;
-    public DbSet<Entity.Task> Tasks { get; set; } = null!;
+    public DbSet<Task2> Tasks { get; set; } = null!;
     public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -77,7 +77,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         });
 
         // Configure Task entity
-        modelBuilder.Entity<Entity.Task>(entity =>
+        modelBuilder.Entity<Task2>(entity =>
         {
             entity.ToTable("Tasks");
             entity.HasKey(e => e.Id);
@@ -102,12 +102,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             entity.ToTable("TimeEntries");
             entity.HasKey(e => e.Id);
-
-            // Configure relationship with User
-            entity.HasOne(te => te.User)
-                  .WithMany(u => u.TimeEntries)
-                  .HasForeignKey(te => te.UserId)
-                  .OnDelete(DeleteBehavior.Restrict);
 
             // Configure relationship with Task
             entity.HasOne(te => te.Task)

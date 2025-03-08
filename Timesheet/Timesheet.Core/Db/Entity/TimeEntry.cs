@@ -14,7 +14,7 @@ namespace Timesheet.Core.Db.Entity
         public string? Description { get; set; }
 
         public int TaskId { get; set; }
-        public Task Task { get; set; } = null!;
+        public Task2 Task { get; set; } = null!;
 
         // Computed property
         public TimeSpan? Duration => EndTimeUtc.HasValue ? EndTimeUtc.Value - StartTimeUtc : null;

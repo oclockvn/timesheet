@@ -29,7 +29,6 @@ internal class TimeEntryService(IUserResolver userResolver, IEntryContextService
             StartTimeUtc = DateTime.UtcNow,
             EndTimeUtc = null,
             Description = model.Description,
-            UserId = currentUser.Id,
             TaskId = context.Value.TaskId,
         };
 
@@ -42,7 +41,6 @@ internal class TimeEntryService(IUserResolver userResolver, IEntryContextService
             StartTimeUtc = timeEntry.StartTimeUtc,
             EndTimeUtc = timeEntry.EndTimeUtc,
             Description = timeEntry.Description,
-            UserId = timeEntry.UserId,
             TaskId = timeEntry.TaskId,
         };
 

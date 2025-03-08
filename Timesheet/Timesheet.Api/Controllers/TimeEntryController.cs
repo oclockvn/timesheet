@@ -22,19 +22,19 @@ public class TimeEntryController : ControllerBase
         return Ok(timeEntry);
     }
 
-    [HttpPost("{id}/stop")]
-    public async Task<ActionResult<TimeEntryDetailModel>> StopTracking(int id)
-    {
-        var timeEntry = await _timeEntryService.StopTrackingAsync(id);
-        return Ok(timeEntry);
-    }
+    //[HttpPost("{id}/stop")]
+    //public async Task<ActionResult<TimeEntryDetailModel>> StopTracking(int id)
+    //{
+    //    var timeEntry = await _timeEntryService.StopTrackingAsync(id);
+    //    return Ok(timeEntry);
+    //}
 
-    [HttpGet("active")]
-    public async Task<ActionResult<TimeEntryDetailModel?>> GetActiveTimeEntry()
-    {
-        var timeEntry = await _timeEntryService.GetActiveTimeEntryAsync();
-        return Ok(timeEntry);
-    }
+    //[HttpGet("active")]
+    //public async Task<ActionResult<TimeEntryDetailModel?>> GetActiveTimeEntry()
+    //{
+    //    var timeEntry = await _timeEntryService.GetActiveTimeEntryAsync();
+    //    return Ok(timeEntry);
+    //}
 }
 
 public record StartTrackingRequest(string TaskCode, string? ProjectCode = null, string? Description = null); 

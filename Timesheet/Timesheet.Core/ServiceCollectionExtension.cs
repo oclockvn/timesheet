@@ -10,33 +10,43 @@ namespace Timesheet.Core;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection AddTimesheetCliCore(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
+    public static IServiceCollection AddTimesheetCliCore(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false, Action<DbContextOptionsBuilder>? dbBuilder = null)
     {
         services
-            .AddApplicationDbContext(configuration, isDevelopment)
+            .AddApplicationDbContext(configuration, isDevelopment, dbBuilder)
             .AddScoped<IUserResolver, HttpContextUserResolver>()
             .AddScoped<IUserService, UserService>()
             .AddScoped<ITimeEntryService, TimeEntryService>()
+            .AddScoped<IEntryContextService, EntryContextService>()
             ;
 
         return services;
     }
 
-    private static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false)
+    private static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration configuration, bool isDevelopment = false, Action<DbContextOptionsBuilder>? dbBuilder = null)
     {
         services.Configure<DbOption>(x => x.ConnectionString = configuration.GetConnectionString("DefaultConnection")!);
         services.AddDbContextFactory<ApplicationDbContext>((sp, options) =>
         {
-            var connectionString = sp.GetRequiredService<IOptions<DbOption>>().Value.ConnectionString;
-            if (string.IsNullOrWhiteSpace(connectionString))
+            options
+                .EnableSensitiveDataLogging(isDevelopment)
+                .EnableDetailedErrors(true);
+
+            if (dbBuilder is not null)
             {
-                throw new InvalidOperationException("Connection string is required");
+                dbBuilder(options);
+            }
+            else
+            {
+                var connectionString = sp.GetRequiredService<IOptions<DbOption>>().Value.ConnectionString;
+                if (string.IsNullOrWhiteSpace(connectionString))
+                {
+                    throw new InvalidOperationException("Connection string is required");
+                }
+
+                options.UseSqlServer(connectionString);
             }
 
-            options.UseSqlServer(connectionString)
-            .EnableSensitiveDataLogging(isDevelopment)
-            .EnableDetailedErrors(true)
-            ;
         }, ServiceLifetime.Scoped);
 
         return services;

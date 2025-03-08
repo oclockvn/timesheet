@@ -20,7 +20,7 @@ public class Project : ICreatedBy
 
     // Navigation properties
     public User User { get; set; } = null!;
-    public ICollection<Task> Tasks { get; set; } = [];
+    public ICollection<Task2> Tasks { get; set; } = [];
 
     public DateTime CreatedUtc { get; set; }
     public int CreatedBy { get; set; }

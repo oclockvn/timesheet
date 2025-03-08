@@ -43,14 +43,14 @@ public partial class EntryContextService(ApplicationDbContext db, IUserResolver 
         }
 
         var task = await db.Tasks.Where(x => x.Code == taskCode)
-            .Select(x => new Db.Entity.Task { Id = x.Id, ProjectId = x.ProjectId })
+            .Select(x => new Db.Entity.Task2 { Id = x.Id, ProjectId = x.ProjectId })
             .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
         var user = await userResolver.Resolve();
         if (task is null)
         {
             // add new task
-            task = new Db.Entity.Task
+            task = new Db.Entity.Task2
             {
                 Code = taskCode,
                 Description = cleanDescription,
